@@ -1,1 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+body, html {
+    margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+    background-color: transparent; 
+}
+
+#scene {
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fondo panorámico */
+#background {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 5760px;
+    height: 1080px;
+    /* RECUERDA PONER EL ENLACE DE TU PISTA PANORÁMICA AQUÍ */
+    background-image: url('https://i.imgur.com/TU_FONDO_AQUI.png');
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    animation: scrollBg 15s linear infinite;
+}
+@keyframes scrollBg {
+    from { transform: translateX(0); }
+    to { transform: translateX(-1920px); }
+}
+
+/* Cronómetro */
+#timer {
+    position: absolute;
+    top: 40px; right: 60px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 54px; color: #ffeb3b;
+    text-shadow: 4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000;
+    z-index: 100;
+}
+
+#runners-container {
+    position: absolute;
+    bottom: 0px; width: 100%; height: 420px;
+}
+
+/* Contenedor de la corredora: Alinea los pies abajo para estabilizar las escalas 512px y 64px */
+.runner-box {
+    position: absolute;
+    width: 96px; 
+    height: 100px; 
+    transition: left 0.1s linear;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; 
+}
+
+/* La imagen de la corredora se adapta sin deformarse */
+.runner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    image-rendering: pixelated; 
+}
+
+/* Nombres con borde dinámico */
+.runner-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px; color: #fff;
+    background: rgba(17, 17, 17, 0.85);
+    border: 3px solid var(--user-color, #ffffff);
+    padding: 4px 6px; border-radius: 4px;
+    position: absolute; top: -25px;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+/* Burbujas de chat */
+.chat-bubble {
+    position: absolute;
+    top: -85px;
+    background: #fff; border: 4px solid #000;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px; color: #000;
+    padding: 8px 12px; border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.25);
+    opacity: 0; transition: opacity 0.25s, transform 0.2s ease-out;
+    pointer-events: none; z-index: 50;
+    transform: scale(0.8);
+}
+.chat-bubble::after {
+    content: ''; position: absolute;
+    bottom: -12px; left: 50%; transform: translateX(-50%);
+    border-width: 8px 8px 0; border-style: solid;
+    border-color: #000 transparent transparent transparent;
+}
+.chat-bubble.show { opacity: 1; transform: scale(1); }
+
+/* Meta */
+#finish-line {
+    position: absolute;
+    right: -250px; bottom: 0;
+    width: 120px; height: 450px;
+    background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 30px 30px;
+    border-left: 10px solid #d32f2f;
+    transition: right 3.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 10;
+}
+#finish-line.show { right: 280px; }
