@@ -47,6 +47,7 @@ let runners = {};
 let maxRunners = 64;
 let countdown = 300; // 5 minutos
 let isRacing = true;
+const BOOST_COOLDOWN = 4000; // 4 segundos de enfriamiento para el turbo
 
 function updateTimerText() {
     let min = Math.floor(countdown / 60).toString().padStart(2, '0');
@@ -81,15 +82,20 @@ function recibirEvento(obj) {
     
     let user = obj.detail.event.data.displayName;
     let text = obj.detail.event.data.text;
-    let color = obj.detail.event.data.tags.color || "#FFFFFF"; // Obtiene el color de Twitch
+    let color = obj.detail.event.data.tags.color || "#FFFFFF";
 
     if (!runners[user] && Object.keys(runners).length < maxRunners) {
         spawnRunner(user, color);
     }
     
     if (runners[user]) {
-        runners[user].speed += 8; // Buff de velocidad al escribir
-        showChatBubble(user, text);
+        let now = Date.now();
+        // Solo da el buff si ya pasó el tiempo de recarga
+        if (now - runners[user].lastBoost >= BOOST_COOLDOWN) {
+            runners[user].speed += 8; 
+            runners[user].lastBoost = now; // Reinicia el cronómetro de la barra
+        }
+        showChatBubble(user, text); // El globo de chat sale siempre
     }
 }
 
@@ -108,20 +114,19 @@ function spawnRunner(username, colorStr) {
     box.className = "runner-box";
     box.id = "runner-" + username;
     
-    // Seleccionar corredora usando el color de Twitch
     let charData = getCharacterByColor(colorStr);
-    
-    // Carril aleatorio
     let laneY = Math.floor(Math.random() * 160); 
+    
     box.style.bottom = (laneY + 10) + "px";
     box.style.zIndex = 300 - laneY;
-    
-    // Asignar variable CSS para el color del borde del nombre
     box.style.setProperty('--user-color', colorStr);
 
     box.innerHTML = `
         <div class="chat-bubble" id="bubble-${username}"></div>
         <div class="runner-name">${username}</div>
+        <div class="stamina-container">
+            <div class="stamina-fill" id="stamina-${username}"></div>
+        </div>
         <img class="runner-img" id="img-${username}" src="${charData.correrTurbo}">
     `;
     container.appendChild(box);
@@ -129,10 +134,11 @@ function spawnRunner(username, colorStr) {
     runners[username] = {
         element: box,
         sprites: charData,
-        x: -200, // Entra desde la izquierda fuera de cámara
-        speed: 12, // Inicia a máxima velocidad (Turbo)
+        x: -200, 
+        speed: 12, 
         laneY: laneY,
-        state: "correrTurbo" 
+        state: "correrTurbo",
+        lastBoost: Date.now() // Inician con el turbo, así que la barra empieza a cargar
     };
 }
 
