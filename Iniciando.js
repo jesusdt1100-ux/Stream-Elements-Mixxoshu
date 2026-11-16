@@ -5,7 +5,7 @@ const CHARACTERS = [
     {
         name: "Grass Wonder",
         frente: "https://i.imgur.com/YUvWQkI.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/7JToqBj.gif",     // Pose (512px)
+        victoria: "https://i.imgur.com/bjadp5J.gif",     // Pose (512px)
         correrLento: "https://i.imgur.com/lhLRvI1.gif",  // Run_Slow (64px)
         correrTurbo: "https://i.imgur.com/Zw0MyPf.gif"   // Run_Fast (64px)
     },
@@ -17,25 +17,25 @@ const CHARACTERS = [
         correrTurbo: "https://i.imgur.com/XBAsKNH.gif"   // Run_Fast (64px)
     },
     {
-        name: "King Halo",
-        frente: "",       // Stand (512px)
-        victoria: "",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
-        correrLento: "",  // Run_Slow (64px)
-        correrTurbo: ""   // Run_Fast (64px)
+        name: "Special Week",
+        frente: "https://i.imgur.com/cdgR5VS.gif",       // Stand (512px)
+        victoria: "https://i.imgur.com/UfQ48JV.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        correrLento: "https://i.imgur.com/iYdVdvC.gif",  // Run_Slow (64px)
+        correrTurbo: "https://i.imgur.com/Hv90jWb.gif"   // Run_Fast (64px)
     },
     {
-        name: "Special Week",
-        frente: "",       // Stand (512px)
-        victoria: "",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
-        correrLento: "",  // Run_Slow (64px)
-        correrTurbo: ""   // Run_Fast (64px)
+        name: "King Halo",
+        frente: "https://i.imgur.com/diJjhBC.gif",       // Stand (512px)
+        victoria: "https://i.imgur.com/oo6Om9l.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        correrLento: "https://i.imgur.com/j0ncvmD.gif",  // Run_Slow (64px)
+        correrTurbo: "https://i.imgur.com/P2NAr0V.gif"   // Run_Fast (64px)
     },
     {
         name: "Condor Pasa",
-        frente: "",       // Stand (512px)
-        victoria: "",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
-        correrLento: "",  // Run_Slow (64px)
-        correrTurbo: ""   // Run_Fast (64px)
+        frente: "https://i.imgur.com/7WaM8zU.gif",       // Stand (512px)
+        victoria: "https://i.imgur.com/6YnBydV.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        correrLento: "https://i.imgur.com/6tCm8l9.gif",  // Run_Slow (64px)
+        correrTurbo: "https://i.imgur.com/njXH8mB.gif"   // Run_Fast (64px)
     }
     // Añade la siguiente copiando la estructura de arriba, separada por una coma.
 ];
