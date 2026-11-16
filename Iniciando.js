@@ -12,32 +12,31 @@ const CHARACTERS = [
     {
         name: "Seiun Sky",
         frente: "https://i.imgur.com/LTWNk1T.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/u8awaYl.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        victoria: "https://i.imgur.com/u8awaYl.gif",     // Celebrate (64px)
         correrLento: "https://i.imgur.com/mwLOMeU.gif",  // Run_Slow (64px)
         correrTurbo: "https://i.imgur.com/XBAsKNH.gif"   // Run_Fast (64px)
     },
     {
         name: "Special Week",
         frente: "https://i.imgur.com/cdgR5VS.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/UfQ48JV.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        victoria: "https://i.imgur.com/UfQ48JV.gif",     // Celebrate (64px)
         correrLento: "https://i.imgur.com/iYdVdvC.gif",  // Run_Slow (64px)
         correrTurbo: "https://i.imgur.com/Hv90jWb.gif"   // Run_Fast (64px)
     },
     {
         name: "King Halo",
         frente: "https://i.imgur.com/diJjhBC.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/oo6Om9l.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        victoria: "https://i.imgur.com/oo6Om9l.gif",     // Celebrate (64px)
         correrLento: "https://i.imgur.com/j0ncvmD.gif",  // Run_Slow (64px)
         correrTurbo: "https://i.imgur.com/P2NAr0V.gif"   // Run_Fast (64px)
     },
     {
         name: "Condor Pasa",
         frente: "https://i.imgur.com/7WaM8zU.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/6YnBydV.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        victoria: "https://i.imgur.com/6YnBydV.gif",     // Celebrate (64px)
         correrLento: "https://i.imgur.com/6tCm8l9.gif",  // Run_Slow (64px)
         correrTurbo: "https://i.imgur.com/njXH8mB.gif"   // Run_Fast (64px)
     }
-    // Añade la siguiente copiando la estructura de arriba, separada por una coma.
 ];
 
 // ==========================================
@@ -58,8 +57,8 @@ function updateTimerText() {
 // Reemplaza onWidgetLoad
 function iniciarOverlay(obj) {
     // Spawns de prueba (Opcional, los puedes quitar en producción)
-    spawnRunner("NPC1", "#FF0000");
-    spawnRunner("NPC2", "#00FF00");
+    spawnRunner("Mixxoshu", "#FF0000");
+    spawnRunner("Spoony", "#00FF00");
     
     let timerInterval = setInterval(() => {
         if (countdown > 0) {
@@ -101,7 +100,6 @@ function recibirEvento(obj) {
 
 // Lógica para asignar personaje según el color del usuario
 function getCharacterByColor(hexColor) {
-    // Convierte el color a número y usa el residuo para asignar un personaje fijo
     let num = parseInt(hexColor.replace('#', ''), 16) || 0;
     let index = num % CHARACTERS.length;
     return CHARACTERS[index];
@@ -124,7 +122,7 @@ function spawnRunner(username, colorStr) {
     box.innerHTML = `
         <div class="chat-bubble" id="bubble-${username}"></div>
         <div class="runner-name">${username}</div>
-        <div class="stamina-container">
+        <div class="stamina-container charging" id="stamina-container-${username}">
             <div class="stamina-fill" id="stamina-${username}"></div>
         </div>
         <img class="runner-img" id="img-${username}" src="${charData.correrTurbo}">
@@ -138,7 +136,7 @@ function spawnRunner(username, colorStr) {
         speed: 12, 
         laneY: laneY,
         state: "correrTurbo",
-        lastBoost: Date.now() // Inician con el turbo, así que la barra empieza a cargar
+        lastBoost: Date.now() // Inician con turbo, por lo que la barra se muestra y empieza a recargar
     };
 }
 
@@ -181,14 +179,19 @@ function updateRace() {
         // --- LÓGICA DE LA BARRA DE ESTAMINA ---
         let timeSinceBoost = now - runners[u].lastBoost;
         let staminaFill = document.getElementById(`stamina-${u}`);
+        let staminaContainer = document.getElementById(`stamina-container-${u}`);
         
-        if (timeSinceBoost >= BOOST_COOLDOWN) {
-            staminaFill.style.height = "100%";
-            staminaFill.style.backgroundColor = "#ffeb3b"; // Amarillo cuando está listo para el boost
-        } else {
-            let percent = Math.floor((timeSinceBoost / BOOST_COOLDOWN) * 100);
-            staminaFill.style.height = percent + "%";
-            staminaFill.style.backgroundColor = "#00a8ff"; // Azul mientras carga
+        if (staminaContainer && staminaFill) {
+            if (timeSinceBoost >= BOOST_COOLDOWN) {
+                // Completado: Se llena y se vuelve invisible
+                staminaFill.style.height = "100%";
+                staminaContainer.classList.remove("charging"); 
+            } else {
+                // En proceso de recarga: Se calcula el porcentaje y se muestra la barra
+                let percent = Math.floor((timeSinceBoost / BOOST_COOLDOWN) * 100);
+                staminaFill.style.height = percent + "%";
+                staminaContainer.classList.add("charging");
+            }
         }
     }
 }
@@ -205,6 +208,12 @@ function endRace() {
             maxDist = runners[u].x;
             winner = u;
         }
+    }
+
+    // Escondemos las barras de todas las corredoras al terminar
+    for (let u in runners) {
+        let staminaContainer = document.getElementById(`stamina-container-${u}`);
+        if (staminaContainer) staminaContainer.classList.remove("charging");
     }
 
     setTimeout(() => {
