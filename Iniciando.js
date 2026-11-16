@@ -156,8 +156,9 @@ function updateRace() {
     if (!isRacing) return;
 
     let maxDist = 0;
+    let now = Date.now(); // Obtenemos el tiempo actual
     
-    // Físicas: Deceleración y avance
+    // Físicas
     for (let u in runners) {
         if (runners[u].speed > 3) runners[u].speed -= 0.4; 
         
@@ -165,17 +166,29 @@ function updateRace() {
         if (runners[u].x > maxDist) maxDist = runners[u].x;
     }
 
-    // Dibujado: Posiciones y cambio de GIFs
+    // Dibujado, GIFs y Barra de Estamina
     for (let u in runners) {
         let displayX = (runners[u].x - maxDist) + 1250; 
         runners[u].element.style.left = displayX + "px";
         
-        // Cambio automático de sprite según velocidad
         let targetState = runners[u].speed > 6 ? "correrTurbo" : "correrLento";
         
         if (runners[u].state !== targetState) {
             runners[u].state = targetState;
             document.getElementById(`img-${u}`).src = runners[u].sprites[targetState];
+        }
+
+        // --- LÓGICA DE LA BARRA DE ESTAMINA ---
+        let timeSinceBoost = now - runners[u].lastBoost;
+        let staminaFill = document.getElementById(`stamina-${u}`);
+        
+        if (timeSinceBoost >= BOOST_COOLDOWN) {
+            staminaFill.style.height = "100%";
+            staminaFill.style.backgroundColor = "#ffeb3b"; // Amarillo cuando está listo para el boost
+        } else {
+            let percent = Math.floor((timeSinceBoost / BOOST_COOLDOWN) * 100);
+            staminaFill.style.height = percent + "%";
+            staminaFill.style.backgroundColor = "#00a8ff"; // Azul mientras carga
         }
     }
 }
