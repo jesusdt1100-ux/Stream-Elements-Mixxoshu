@@ -15,6 +15,27 @@ const CHARACTERS = [
         victoria: "https://i.imgur.com/u8awaYl.gif",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
         correrLento: "https://i.imgur.com/mwLOMeU.gif",  // Run_Slow (64px)
         correrTurbo: "https://i.imgur.com/XBAsKNH.gif"   // Run_Fast (64px)
+    },
+    {
+        name: "King Halo",
+        frente: "",       // Stand (512px)
+        victoria: "",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        correrLento: "",  // Run_Slow (64px)
+        correrTurbo: ""   // Run_Fast (64px)
+    },
+    {
+        name: "Special Week",
+        frente: "",       // Stand (512px)
+        victoria: "",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        correrLento: "",  // Run_Slow (64px)
+        correrTurbo: ""   // Run_Fast (64px)
+    },
+    {
+        name: "Condor Pasa",
+        frente: "",       // Stand (512px)
+        victoria: "",     // Celebrate (64px) - Puedes cambiarlo al Pose de 512px si prefieres
+        correrLento: "",  // Run_Slow (64px)
+        correrTurbo: ""   // Run_Fast (64px)
     }
     // Añade la siguiente copiando la estructura de arriba, separada por una coma.
 ];
@@ -36,8 +57,8 @@ function updateTimerText() {
 // Reemplaza onWidgetLoad
 function iniciarOverlay(obj) {
     // Spawns de prueba (Opcional, los puedes quitar en producción)
-    spawnRunner("Mixxoshu", "#FF0000");
-    spawnRunner("Spoony", "#00FF00");
+    spawnRunner("NPC1", "#FF0000");
+    spawnRunner("NPC2", "#00FF00");
     
     let timerInterval = setInterval(() => {
         if (countdown > 0) {
