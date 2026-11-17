@@ -13,70 +13,77 @@ body, html {
 }
 
 /* ==========================================
-   SISTEMA DE PARALLAX (RELACIÓN DE ASPECTO INTACTA)
+   SISTEMA DE PARALLAX (ESCALA NATIVA 344x192)
    ========================================== */
 .parallax-layer {
     position: absolute;
     bottom: 0; left: 0;
-    width: 100%; height: 1080px;
+    
+    /* El ancho es infinito para evitar cortes al animar */
+    width: 2000vw; 
+    height: 1080px;
     
     background-repeat: repeat-x; 
+    background-position: left bottom;
+    image-rendering: pixelated; 
     
-    /* El ancho es 'auto', la altura es la variable. Así no se estira y mantiene el 4:1 */
-    background-size: auto var(--bg-height);
+    /* Factor de escala y cálculo del ancho nativo escalado */
+    --scale: 1;
+    --scaled-width: calc(344px * var(--scale));
     
+    /* Forzamos el ancho calculado y 'auto' en altura para mantener el aspecto */
+    background-size: var(--scaled-width) auto; 
+    
+    /* La animación mueve la imagen exactamente su propio ancho escalado */
     animation: scrollLayer var(--duration) linear infinite;
-    image-rendering: pixelated;
 }
 
-/* Calculamos el movimiento basado en la altura y la proporción 4:1 */
 @keyframes scrollLayer {
-    0% { background-position-x: 0px; }
-    100% { background-position-x: calc(-4 * var(--bg-height)); }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-1 * var(--scaled-width))); }
 }
 
 /* ==========================================
-   CAPAS INDIVIDUALES (Ajusta los tamaños aquí)
+   CAPAS INDIVIDUALES (Ajusta la Escala aquí)
    ========================================== */
 
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
-    background-position-y: top;
-    /* Para llenar la pantalla sin estirar, la altura debe ser al menos 1080px */
-    --bg-height: 1080px; 
+    background-position: left top; 
+    /* Escala alta para que las nubes sean grandes */
+    --scale: 5.6; 
     --duration: 120s;
     z-index: 1;
 }
 
 #layer-mountains {
     background-image: url('https://i.imgur.com/e4K8BIY.png');
-    background-position-y: bottom;
-    --bg-height: 1080px;
+    /* Escala alta para que la montaña llegue al borde de la pista */
+    --scale: 5.6; 
     --duration: 80s;
     z-index: 2;
 }
 
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    background-position-y: bottom;
-    --bg-height: 1080px;
+    /* Escala ajustada para el bosque de fondo */
+    --scale: 5.6; 
     --duration: 45s;
     z-index: 3;
 }
 
 #layer-track {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
-    background-position-y: bottom;
-    --bg-height: 1080px; 
+    /* Escala base para la pista (1080px de alto aprox) */
+    --scale: 5.6; 
     --duration: 15s;
     z-index: 4;
 }
 
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
-    /* Se posiciona abajo y se ajusta la altura para hacerla más pequeña */
-    background-position-y: bottom;
-    --bg-height: 250px; /* Reducida significativamente para que esté abajo y mantenga proporción */
+    /* Escala reducida para que la valla sea más pequeña y quede en la base */
+    --scale: 3; 
     --duration: 7s; 
     z-index: 400;
     pointer-events: none;
