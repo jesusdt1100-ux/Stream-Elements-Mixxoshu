@@ -78,7 +78,7 @@ body, html {
     --duration: 1.0s; /* Antes 3.5s - Blur de velocidad en primer plano */
     z-index: 400;
     pointer-events: none;
-    bottom: -170px; 
+    bottom: -160px; 
 }
 
 /* ==========================================
