@@ -57,8 +57,8 @@ body, html {
 
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    background-position: left 0px bottom 400px; 
-    --scale: 3; 
+    background-position: left 0px bottom 360px; 
+    --scale: 3.2; 
     --duration: 5s; /* Antes 22s */
     z-index: 3;
 }
