@@ -17,15 +17,10 @@ body, html {
    ========================================== */
 .parallax-layer {
     position: absolute;
-    /* Por defecto, todas empiezan desde abajo, pero las ajustaremos individualmente */
-    bottom: 0; 
-    left: 0;
+    bottom: 0; left: 0;
     width: 2000vw; 
     height: 1080px;
     background-repeat: repeat-x; 
-    
-    /* Mantenemos background-position-x en left, quitamos bottom de aquí para controlarlo con 'bottom' del DIV */
-    background-position-x: left; 
     image-rendering: pixelated; 
     
     --scale: 1;
@@ -46,7 +41,7 @@ body, html {
 
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
-    background-position-y: top; 
+    background-position: left top; 
     --scale: 5.6; 
     --duration: 120s;
     z-index: 1;
@@ -54,8 +49,8 @@ body, html {
 
 #layer-mountains {
     background-image: url('https://i.imgur.com/e4K8BIY.png');
-    /* Subimos las montañas 70px */
-    bottom: 70px;
+    /* Usamos porcentaje para subir la imagen internamente sin mover la capa */
+    background-position: left 20%; 
     --scale: 5.6; 
     --duration: 80s;
     z-index: 2;
@@ -63,8 +58,8 @@ body, html {
 
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    /* Subimos la vegetación 120px */
-    bottom: 120px;
+    /* Subimos la vegetación internamente */
+    background-position: left 40%; 
     --scale: 5.6; 
     --duration: 45s;
     z-index: 3;
@@ -72,7 +67,7 @@ body, html {
 
 #layer-track {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
-    /* Escala de la pista */
+    background-position: left bottom;
     --scale: 2.8; 
     --duration: 15s;
     z-index: 4;
@@ -80,12 +75,12 @@ body, html {
 
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
-    /* Reducimos la escala de la valla en un tercio (de 3 a 2) */
+    background-position: left bottom;
     --scale: 2; 
     --duration: 7s; 
     z-index: 400;
     pointer-events: none;
-    /* Ajustamos el hundimiento para que encaje con su nuevo tamaño */
+    /* La valla sí se hunde con bottom porque queremos cortarla por debajo de la cámara */
     bottom: -60px; 
 }
 
@@ -104,7 +99,6 @@ body, html {
 
 #runners-container {
     position: absolute;
-    /* La base de las corredoras se mantiene. Si "flotan" sobre la hierba verde superior, podemos bajar este valor. */
     bottom: 0px; 
     width: 100%; height: 420px;
     z-index: 10;
@@ -131,13 +125,11 @@ body, html {
 
 .runner-name {
     font-family: 'Press Start 2P', cursive;
-    /* Aumenté un poco la fuente del nombre para que no se vea minúsculo con el nuevo tamaño del sprite */
     font-size: 18px; 
     color: #fff;
     background: rgba(17, 17, 17, 0.85);
     border: 3px solid var(--user-color, #ffffff);
     padding: 6px 10px; border-radius: 4px;
-    /* Subí la posición del nombre para que no tape al personaje */
     position: absolute; top: -35px;
     white-space: nowrap;
     text-transform: uppercase;
@@ -146,11 +138,9 @@ body, html {
 
 .chat-bubble {
     position: absolute;
-    /* Subí la burbuja para que no quede detrás del sprite gigante */
     top: -105px;
     background: #fff; border: 4px solid #000;
     font-family: 'Press Start 2P', cursive;
-    /* Texto de chat un poco más grande */
     font-size: 14px; 
     color: #000;
     padding: 10px 14px; border-radius: 8px;
@@ -185,7 +175,6 @@ body, html {
    ========================================== */
 .stamina-container {
     position: absolute;
-    /* Separé la barra a la izquierda y la hice más alta y ancha para compensar el tamaño x3 */
     left: -25px;
     bottom: 5px;
     width: 10px;
