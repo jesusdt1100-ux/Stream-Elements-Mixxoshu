@@ -75,7 +75,7 @@ body, html {
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
     /* AQUÍ PUEDES MODIFICAR LA ESCALA (Al ser 70% o más, se verá enorme y cerca) */
-    --bg-scale: 75%; 
+    --bg-scale: 20%; 
     animation: slideBg 8s linear infinite;
     z-index: 400;
     pointer-events: none;
