@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* Se importan fuentes pixeladas, cursivas y de carreras */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pacifico&family=Racing+Sans+One&display=swap');
 
 body, html {
     margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
-    background-color: #87CEEB; /* Azul cielo de fondo */
+    background-color: #87CEEB; 
 }
 
 #scene {
@@ -13,7 +14,7 @@ body, html {
 }
 
 /* ==========================================
-   SISTEMA DE PARALLAX (ESCALA NATIVA 344x192)
+   SISTEMA DE PARALLAX
    ========================================== */
 .parallax-layer {
     position: absolute;
@@ -36,32 +37,31 @@ body, html {
 }
 
 /* ==========================================
-   CAPAS INDIVIDUALES
+   CAPAS INDIVIDUALES (Velocidad al doble)
    ========================================== */
 
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
     background-position: left 0px top 0px; 
     --scale: 5.6; 
-    --duration: 120s;
+    --duration: 60s; /* Mucho más rápido */
     z-index: 1;
 }
 
 #layer-mountains {
     background-image: url('https://i.imgur.com/e4K8BIY.png');
-    /* Sube las montañas 70px exactos desde el borde inferior de su capa */
     background-position: left 0px bottom 70px; 
     --scale: 5.6; 
-    --duration: 80s;
+    --duration: 40s;
     z-index: 2;
 }
 
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    /* Sube la vegetación 120px exactos desde el borde inferior de su capa */
-    background-position: left 0px bottom 120px; 
-    --scale: 5.6; 
-    --duration: 45s;
+    /* Subida a 220px y escala reducida un tercio (3.75) */
+    background-position: left 0px bottom 220px; 
+    --scale: 3.75; 
+    --duration: 22s;
     z-index: 3;
 }
 
@@ -69,34 +69,71 @@ body, html {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
     background-position: left 0px bottom 0px;
     --scale: 2.8; 
-    --duration: 15s;
+    --duration: 7.5s; /* Velocidad de pista de carreras real */
     z-index: 4;
 }
 
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
     background-position: left 0px bottom 0px;
-    --scale: 2; 
-    --duration: 7s; 
+    /* Escala duplicada (4) y hundida 100px extra (-160px) */
+    --scale: 4; 
+    --duration: 3.5s; /* Pasa a toda velocidad */
     z-index: 400;
     pointer-events: none;
-    /* La valla frontal sí usa 'bottom' para recortar toda la capa por debajo del encuadre */
-    bottom: -60px; 
+    bottom: -160px; 
 }
 
 
 /* ==========================================
-   RESTO DEL OVERLAY (Corredoras, Chat, Timer, Barra)
+   TEXTO FLOTANTE FANCY Y TIMER
    ========================================== */
+
+#floating-text {
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    text-align: center;
+    z-index: 200;
+    /* Efecto de flotar en el aire */
+    animation: floatUpDown 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.title {
+    font-family: 'Pacifico', cursive; /* Tipografía elegante */
+    font-size: 80px;
+    color: #ffeb3b;
+    text-shadow: 4px 4px 0 #d32f2f, -2px -2px 0 #d32f2f, 2px -2px 0 #d32f2f, -2px 2px 0 #d32f2f, 2px 2px 0 #d32f2f;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-family: 'Racing Sans One', cursive; /* Tipografía dinámica */
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 3px 3px 0 #000;
+    margin-top: 10px;
+}
+
+@keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
 #timer {
     position: absolute;
     top: 40px; right: 60px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 54px; color: #ffeb3b;
-    text-shadow: 4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000;
+    font-family: 'Racing Sans One', cursive;
+    font-size: 72px; 
+    color: #fff;
+    text-shadow: 4px 4px 0px #00a8ff, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000;
     z-index: 500;
 }
 
+/* ==========================================
+   CORREDORAS Y CHAT
+   ========================================== */
 #runners-container {
     position: absolute;
     bottom: 0px; 
@@ -106,9 +143,9 @@ body, html {
 
 .runner-box {
     position: absolute;
-    /* TRIPLICADO EL TAMAÑO DE LAS CORREDORAS */
-    width: 288px; 
-    height: 300px; 
+    /* Tamaño reducido un tercio (De 288x300 a 192x200) */
+    width: 192px; 
+    height: 200px; 
     transition: left 0.1s linear;
     display: flex;
     flex-direction: column;
@@ -125,12 +162,12 @@ body, html {
 
 .runner-name {
     font-family: 'Press Start 2P', cursive;
-    font-size: 18px; 
+    font-size: 14px; 
     color: #fff;
     background: rgba(17, 17, 17, 0.85);
     border: 3px solid var(--user-color, #ffffff);
-    padding: 6px 10px; border-radius: 4px;
-    position: absolute; top: -35px;
+    padding: 4px 8px; border-radius: 4px;
+    position: absolute; top: -25px;
     white-space: nowrap;
     text-transform: uppercase;
     z-index: 15;
@@ -138,10 +175,10 @@ body, html {
 
 .chat-bubble {
     position: absolute;
-    top: -105px;
+    top: -95px;
     background: #fff; border: 4px solid #000;
     font-family: 'Press Start 2P', cursive;
-    font-size: 14px; 
+    font-size: 12px; 
     color: #000;
     padding: 10px 14px; border-radius: 8px;
     white-space: nowrap;
@@ -159,12 +196,17 @@ body, html {
 }
 .chat-bubble.show { opacity: 1; transform: scale(1); }
 
+/* ==========================================
+   META (Línea roja)
+   ========================================== */
 #finish-line {
     position: absolute;
     right: -250px; bottom: 0;
-    width: 120px; height: 450px;
-    background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 30px 30px;
-    border-left: 10px solid #d32f2f;
+    width: 20px; height: 450px;
+    background-color: #d32f2f; /* Cinta roja sólida */
+    border-left: 3px dashed #fff;
+    border-right: 3px dashed #fff;
+    box-shadow: -10px 0px 20px rgba(0,0,0,0.4); /* Sombra para dar volumen a la cinta */
     transition: right 3.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 5;
 }
@@ -175,10 +217,10 @@ body, html {
    ========================================== */
 .stamina-container {
     position: absolute;
-    left: -25px;
+    left: -15px;
     bottom: 5px;
-    width: 10px;
-    height: 60px;
+    width: 8px;
+    height: 50px;
     background-color: rgba(0, 0, 0, 0.7);
     border: 3px solid #000;
     border-radius: 4px;
