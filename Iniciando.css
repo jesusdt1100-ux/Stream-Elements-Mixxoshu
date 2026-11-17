@@ -13,28 +13,26 @@ body, html {
 }
 
 /* ==========================================
-   SISTEMA DE PARALLAX (LOOP PERFECTO 4:1)
+   SISTEMA DE PARALLAX (RELACIÓN DE ASPECTO INTACTA)
    ========================================== */
 .parallax-layer {
     position: absolute;
     bottom: 0; left: 0;
     width: 100%; height: 1080px;
     
-    /* Esto genera copias infinitas fuera de la pantalla automáticamente */
     background-repeat: repeat-x; 
     
-    /* MAGIA MATEMÁTICA: Como tus imágenes son 1024x256, el ancho siempre es la altura x 4 */
-    --bg-width: calc(var(--bg-height) * 4);
-    background-size: var(--bg-width) var(--bg-height);
+    /* El ancho es 'auto', la altura es la variable. Así no se estira y mantiene el 4:1 */
+    background-size: auto var(--bg-height);
     
-    /* Mueve la imagen exactamente la distancia de su propio ancho para un loop invisible */
     animation: scrollLayer var(--duration) linear infinite;
     image-rendering: pixelated;
 }
 
+/* Calculamos el movimiento basado en la altura y la proporción 4:1 */
 @keyframes scrollLayer {
     0% { background-position-x: 0px; }
-    100% { background-position-x: calc(-1 * var(--bg-width)); }
+    100% { background-position-x: calc(-4 * var(--bg-height)); }
 }
 
 /* ==========================================
@@ -44,7 +42,7 @@ body, html {
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
     background-position-y: top;
-    /* ⬇️ AQUÍ AJUSTAS EL TAMAÑO: Al estar en 1080px llena toda la pantalla */
+    /* Para llenar la pantalla sin estirar, la altura debe ser al menos 1080px */
     --bg-height: 1080px; 
     --duration: 120s;
     z-index: 1;
@@ -76,13 +74,9 @@ body, html {
 
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
+    /* Se posiciona abajo y se ajusta la altura para hacerla más pequeña */
     background-position-y: bottom;
-    
-    /* ⬇️ AQUÍ AJUSTAS EL TAMAÑO DE LA VALLA FRONTAL */
-    /* 450px la hace mucho más pequeña, pero mantiene su proporción correcta y pegada al piso */
-    --bg-height: 450px; 
-    
-    /* ⬇️ AQUÍ AJUSTAS LA VELOCIDAD DE LA VALLA */
+    --bg-height: 250px; /* Reducida significativamente para que esté abajo y mantenga proporción */
     --duration: 7s; 
     z-index: 400;
     pointer-events: none;
@@ -90,7 +84,7 @@ body, html {
 
 
 /* ==========================================
-   RESTO DEL OVERLAY (Corredoras, Chat, Timer)
+   RESTO DEL OVERLAY (Corredoras, Chat, Timer, Barra)
    ========================================== */
 #timer {
     position: absolute;
