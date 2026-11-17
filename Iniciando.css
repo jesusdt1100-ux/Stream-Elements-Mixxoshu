@@ -2,7 +2,7 @@
 
 body, html {
     margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
-    background-color: transparent; 
+    background-color: #87CEEB; /* Color de cielo base */
 }
 
 #scene {
@@ -10,68 +10,91 @@ body, html {
     height: 1080px;
     position: relative;
     overflow: hidden;
-    background-color: #87CEEB; /* Color base por si el cielo demora en cargar */
 }
 
 /* ==========================================
-   SISTEMA DE PARALLAX (5 CAPAS)
+   SISTEMA DE PARALLAX (5 CAPAS - LOOP PERFECTO)
    ========================================== */
 .parallax-layer {
     position: absolute;
-    bottom: 0; left: 0;
-    width: 5760px; /* Suficientemente ancho para el loop */
+    bottom: 0; 
+    left: 0;
+    width: 100%; 
     height: 1080px;
-    background-repeat: repeat-x;
-    /* Ajusta el tamaño. Si recortaste las imágenes justas y se ven estiradas, 
-       cambia "auto 100%" por "auto" o "auto 50%" según necesites */
-    background-size: auto 100%; 
-    background-position: bottom left;
-    image-rendering: pixelated; /* Mantiene la nitidez del pixel art */
+    
+    /* Repite la imagen hacia los lados infinitamente */
+    background-repeat: repeat-x; 
+    
+    /* El tamaño se controla ahora con esta variable para que no se estiren */
+    background-size: auto var(--bg-scale); 
+    
+    /* Alinea todas las capas a la parte inferior del lienzo */
+    background-position-y: bottom;
+    
+    image-rendering: pixelated;
 }
 
 /* 1. Cielo (El más lejano y lento) */
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
-    animation: scrollBg 120s linear infinite;
+    /* AQUÍ PUEDES MODIFICAR LA ESCALA (100% = llena la pantalla, 50% = mitad de alto) */
+    --bg-scale: 100%; 
+    /* AQUÍ PUEDES MODIFICAR LA VELOCIDAD (Más segundos = más lento) */
+    animation: slideBg 120s linear infinite;
     z-index: 1;
 }
 
 /* 2. Montañas */
 #layer-mountains {
     background-image: url('https://i.imgur.com/e4K8BIY.png');
-    animation: scrollBg 80s linear infinite;
+    /* AQUÍ PUEDES MODIFICAR LA ESCALA (Al ser 30%, se verán más lejos y pequeñas) */
+    --bg-scale: 30%; 
+    animation: slideBg 80s linear infinite;
     z-index: 2;
 }
 
 /* 3. Vegetación y Bosque */
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    animation: scrollBg 45s linear infinite;
+    /* AQUÍ PUEDES MODIFICAR LA ESCALA */
+    --bg-scale: 45%; 
+    animation: slideBg 45s linear infinite;
     z-index: 3;
 }
 
 /* 4. Pista de tierra (Donde pisan las corredoras) */
 #layer-track {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
-    animation: scrollBg 15s linear infinite; /* Velocidad base */
+    /* AQUÍ PUEDES MODIFICAR LA ESCALA */
+    --bg-scale: 60%; 
+    animation: slideBg 15s linear infinite; 
     z-index: 4;
 }
 
 /* 5. Valla Frontal (El más cercano y rápido, pasa por delante de todo) */
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
-    animation: scrollBg 8s linear infinite;
-    z-index: 400; /* Z-index altísimo para tapar a las corredoras (que llegan hasta 300) */
-    pointer-events: none; /* Evita que la valla bloquee clics o interacciones */
+    /* AQUÍ PUEDES MODIFICAR LA ESCALA (Al ser 70% o más, se verá enorme y cerca) */
+    --bg-scale: 75%; 
+    animation: slideBg 8s linear infinite;
+    z-index: 400;
+    pointer-events: none;
 }
 
-@keyframes scrollBg {
-    from { transform: translateX(0); }
-    to { transform: translateX(-1920px); }
+/* 
+   Nueva animación basada en posición de fondo.
+   Al ir de 0 a 100%, CSS calcula automáticamente el tamaño de la imagen 
+   y garantiza un bucle continuo sin saltos feos.
+*/
+@keyframes slideBg {
+    0% { background-position-x: 0; }
+    100% { background-position-x: -100vw; } /* Usa viewport width para un cálculo más preciso */
 }
+/* Alternativa si -100vw da un pequeño salto: usa un valor en píxeles alto que sea múltiplo del ancho de tu imagen. */
+
 
 /* ==========================================
-   RESTO DEL OVERLAY
+   RESTO DEL OVERLAY (Se mantiene igual)
    ========================================== */
 #timer {
     position: absolute;
@@ -85,7 +108,7 @@ body, html {
 #runners-container {
     position: absolute;
     bottom: 0px; width: 100%; height: 420px;
-    z-index: 10; /* Base para las corredoras, se calcula dinámicamente en JS */
+    z-index: 10;
 }
 
 .runner-box {
@@ -131,12 +154,14 @@ body, html {
     pointer-events: none; z-index: 50;
     transform: scale(0.8);
 }
+
 .chat-bubble::after {
     content: ''; position: absolute;
     bottom: -12px; left: 50%; transform: translateX(-50%);
     border-width: 8px 8px 0; border-style: solid;
     border-color: #000 transparent transparent transparent;
 }
+
 .chat-bubble.show { opacity: 1; transform: scale(1); }
 
 #finish-line {
@@ -146,7 +171,7 @@ body, html {
     background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 30px 30px;
     border-left: 10px solid #d32f2f;
     transition: right 3.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-    z-index: 5; /* Detrás de las corredoras y vallas */
+    z-index: 5;
 }
 #finish-line.show { right: 280px; }
 
