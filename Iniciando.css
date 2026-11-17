@@ -160,7 +160,7 @@ body, html {
          2px  2px 0 var(--user-color, #000),
          0px  4px 0 rgba(0,0,0,0.6); 
     position: absolute; 
-    top: -20px;
+    top: -80px;
     white-space: nowrap;
     text-transform: uppercase;
     z-index: 15;
