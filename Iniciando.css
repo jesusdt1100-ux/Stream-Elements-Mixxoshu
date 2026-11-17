@@ -1,5 +1,4 @@
-/* Se importan fuentes pixeladas, cursivas y de carreras */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pacifico&family=Racing+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Racing+Sans+One&display=swap');
 
 body, html {
     margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
@@ -37,14 +36,14 @@ body, html {
 }
 
 /* ==========================================
-   CAPAS INDIVIDUALES (Velocidad al doble)
+   CAPAS INDIVIDUALES
    ========================================== */
 
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
     background-position: left 0px top 0px; 
     --scale: 5.6; 
-    --duration: 60s; /* Mucho más rápido */
+    --duration: 60s; 
     z-index: 1;
 }
 
@@ -58,9 +57,9 @@ body, html {
 
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    /* Subida a 220px y escala reducida un tercio (3.75) */
-    background-position: left 0px bottom 420px; 
-    --scale: 3; 
+    /* Subido a 370px (220 + 150) y escala reducida un tercio (de 3.75 a 2.5) */
+    background-position: left 0px bottom 370px; 
+    --scale: 2.5; 
     --duration: 22s;
     z-index: 3;
 }
@@ -69,24 +68,22 @@ body, html {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
     background-position: left 0px bottom 0px;
     --scale: 2.8; 
-    --duration: 7.5s; /* Velocidad de pista de carreras real */
+    --duration: 7.5s; 
     z-index: 4;
 }
 
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
     background-position: left 0px bottom 0px;
-    /* Escala duplicada (4) y hundida 100px extra (-160px) */
     --scale: 4; 
-    --duration: 3.5s; /* Pasa a toda velocidad */
+    --duration: 3.5s; 
     z-index: 400;
     pointer-events: none;
-    bottom: -140px; 
+    bottom: -160px; 
 }
 
-
 /* ==========================================
-   TEXTO FLOTANTE FANCY Y TIMER
+   TEXTO FLOTANTE (ESTILO UMA MUSUME)
    ========================================== */
 
 #floating-text {
@@ -95,30 +92,41 @@ body, html {
     width: 100%;
     text-align: center;
     z-index: 200;
-    /* Efecto de flotar en el aire */
-    animation: floatUpDown 4s ease-in-out infinite;
+    animation: floatUpDown 3s ease-in-out infinite;
     pointer-events: none;
 }
 
 .title {
-    font-family: 'Pacifico', cursive; /* Tipografía elegante */
-    font-size: 80px;
-    color: #ffeb3b;
-    text-shadow: 4px 4px 0 #d32f2f, -2px -2px 0 #d32f2f, 2px -2px 0 #d32f2f, -2px 2px 0 #d32f2f, 2px 2px 0 #d32f2f;
-    letter-spacing: 2px;
+    font-family: 'Racing Sans One', cursive;
+    font-size: 85px;
+    color: #ffffff;
+    /* Borde principal rosa fuerte y sombra paralela verde lima */
+    -webkit-text-stroke: 3px #ff007f;
+    text-shadow: 
+        6px 6px 0px #76ff03, /* Sombra verde gruesa */
+        -2px -2px 0 #ff007f,
+         2px -2px 0 #ff007f,
+        -2px  2px 0 #ff007f,
+         2px  2px 0 #ff007f;
+    /* Inclinación para dar sensación de hiper-velocidad */
+    transform: skewX(-12deg); 
+    letter-spacing: 3px;
+    margin-bottom: 5px;
 }
 
 .subtitle {
-    font-family: 'Racing Sans One', cursive; /* Tipografía dinámica */
+    font-family: 'Racing Sans One', cursive;
     font-size: 32px;
     color: #fff;
+    /* Mismo estilo de la franquicia pero más sutil */
+    -webkit-text-stroke: 1.5px #ff007f;
     text-shadow: 3px 3px 0 #000;
-    margin-top: 10px;
+    transform: skewX(-12deg);
 }
 
 @keyframes floatUpDown {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    50% { transform: translateY(-15px); }
 }
 
 #timer {
@@ -132,7 +140,7 @@ body, html {
 }
 
 /* ==========================================
-   CORREDORAS Y CHAT
+   CORREDORAS Y NOMBRES
    ========================================== */
 #runners-container {
     position: absolute;
@@ -143,7 +151,6 @@ body, html {
 
 .runner-box {
     position: absolute;
-    /* Tamaño reducido un tercio (De 288x300 a 192x200) */
     width: 192px; 
     height: 200px; 
     transition: left 0.1s linear;
@@ -162,12 +169,21 @@ body, html {
 
 .runner-name {
     font-family: 'Press Start 2P', cursive;
-    font-size: 14px; 
+    font-size: 13px; 
     color: #fff;
-    background: rgba(17, 17, 17, 0.85);
-    border: 3px solid var(--user-color, #ffffff);
-    padding: 4px 8px; border-radius: 4px;
-    position: absolute; top: -25px;
+    /* Eliminada la caja de fondo */
+    background: transparent; 
+    border: none;
+    padding: 0;
+    /* El color del borde usa el color de Twitch del usuario */
+    text-shadow: 
+        -2px -2px 0 var(--user-color, #000),
+         2px -2px 0 var(--user-color, #000),
+        -2px  2px 0 var(--user-color, #000),
+         2px  2px 0 var(--user-color, #000),
+         0px  4px 0 rgba(0,0,0,0.6); /* Sombra negra leve hacia abajo */
+    position: absolute; 
+    top: -20px;
     white-space: nowrap;
     text-transform: uppercase;
     z-index: 15;
@@ -175,12 +191,12 @@ body, html {
 
 .chat-bubble {
     position: absolute;
-    top: -95px;
+    top: -85px;
     background: #fff; border: 4px solid #000;
     font-family: 'Press Start 2P', cursive;
-    font-size: 12px; 
+    font-size: 11px; 
     color: #000;
-    padding: 10px 14px; border-radius: 8px;
+    padding: 8px 12px; border-radius: 8px;
     white-space: nowrap;
     box-shadow: 4px 4px 0px rgba(0,0,0,0.25);
     opacity: 0; transition: opacity 0.25s, transform 0.2s ease-out;
@@ -203,10 +219,10 @@ body, html {
     position: absolute;
     right: -250px; bottom: 0;
     width: 20px; height: 450px;
-    background-color: #d32f2f; /* Cinta roja sólida */
+    background-color: #d32f2f; 
     border-left: 3px dashed #fff;
     border-right: 3px dashed #fff;
-    box-shadow: -10px 0px 20px rgba(0,0,0,0.4); /* Sombra para dar volumen a la cinta */
+    box-shadow: -10px 0px 20px rgba(0,0,0,0.4); 
     transition: right 3.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 5;
 }
@@ -217,12 +233,13 @@ body, html {
    ========================================== */
 .stamina-container {
     position: absolute;
-    left: -15px;
-    bottom: 5px;
-    width: 8px;
-    height: 50px;
+    /* Ajustada a la izquierda y subida al nivel del torso de la corredora */
+    left: -8px;
+    bottom: 30px;
+    width: 6px;
+    height: 45px;
     background-color: rgba(0, 0, 0, 0.7);
-    border: 3px solid #000;
+    border: 2px solid #000;
     border-radius: 4px;
     overflow: hidden;
     opacity: 0;
