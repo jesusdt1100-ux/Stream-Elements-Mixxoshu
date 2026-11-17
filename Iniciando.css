@@ -57,7 +57,7 @@ body, html {
 
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    background-position: left 0px bottom 370px; 
+    background-position: left 0px bottom 470px; 
     --scale: 2.5; 
     --duration: 5s; /* Antes 22s */
     z-index: 3;
@@ -66,19 +66,19 @@ body, html {
 #layer-track {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
     background-position: left 0px bottom 0px;
-    --scale: 2.8; 
-    --duration: 1.5s; /* Antes 7.5s - Velocidad super rápida */
+    --scale: 2.5; 
+    --duration: 1.2s; /* Antes 7.5s - Velocidad super rápida */
     z-index: 4;
 }
 
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
     background-position: left 0px bottom 0px;
-    --scale: 4; 
-    --duration: 1.2s; /* Antes 3.5s - Blur de velocidad en primer plano */
+    --scale: 2.8; 
+    --duration: 1.0s; /* Antes 3.5s - Blur de velocidad en primer plano */
     z-index: 400;
     pointer-events: none;
-    bottom: -160px; 
+    bottom: -200px; 
 }
 
 /* ==========================================
