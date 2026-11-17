@@ -18,23 +18,16 @@ body, html {
 .parallax-layer {
     position: absolute;
     bottom: 0; left: 0;
-    
-    /* El ancho es infinito para evitar cortes al animar */
     width: 2000vw; 
     height: 1080px;
-    
     background-repeat: repeat-x; 
     background-position: left bottom;
     image-rendering: pixelated; 
     
-    /* Factor de escala y cálculo del ancho nativo escalado */
     --scale: 1;
     --scaled-width: calc(344px * var(--scale));
     
-    /* Forzamos el ancho calculado y 'auto' en altura para mantener el aspecto */
     background-size: var(--scaled-width) auto; 
-    
-    /* La animación mueve la imagen exactamente su propio ancho escalado */
     animation: scrollLayer var(--duration) linear infinite;
 }
 
@@ -44,13 +37,12 @@ body, html {
 }
 
 /* ==========================================
-   CAPAS INDIVIDUALES (Ajusta la Escala aquí)
+   CAPAS INDIVIDUALES
    ========================================== */
 
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
     background-position: left top; 
-    /* Escala alta para que las nubes sean grandes */
     --scale: 5.6; 
     --duration: 120s;
     z-index: 1;
@@ -58,7 +50,6 @@ body, html {
 
 #layer-mountains {
     background-image: url('https://i.imgur.com/e4K8BIY.png');
-    /* Escala alta para que la montaña llegue al borde de la pista */
     --scale: 5.6; 
     --duration: 80s;
     z-index: 2;
@@ -66,7 +57,6 @@ body, html {
 
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    /* Escala ajustada para el bosque de fondo */
     --scale: 5.6; 
     --duration: 45s;
     z-index: 3;
@@ -74,19 +64,20 @@ body, html {
 
 #layer-track {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
-    /* Escala base para la pista (1080px de alto aprox) */
-    --scale: 2; 
+    /* Escala reducida en un tercio para mejor proporción */
+    --scale: 3.75; 
     --duration: 15s;
     z-index: 4;
 }
 
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
-    /* Escala reducida para que la valla sea más pequeña y quede en la base */
     --scale: 3; 
     --duration: 7s; 
     z-index: 400;
     pointer-events: none;
+    /* Hunde la capa completa 110px por debajo del borde de la pantalla */
+    bottom: -110px; 
 }
 
 
