@@ -43,7 +43,7 @@ body, html {
     background-image: url('https://i.imgur.com/o98p3B0.png');
     background-position: left 0px top 0px; 
     --scale: 5.6; 
-    --duration: 20s; /* Antes 60s */
+    --duration: 60s; /* Antes 60s */
     z-index: 1;
 }
 
@@ -51,7 +51,7 @@ body, html {
     background-image: url('https://i.imgur.com/e4K8BIY.png');
     background-position: left 0px bottom 70px; 
     --scale: 5.6; 
-    --duration: 13s; /* Antes 40s */
+    --duration: 40s; /* Antes 40s */
     z-index: 2;
 }
 
@@ -59,7 +59,7 @@ body, html {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
     background-position: left 0px bottom 370px; 
     --scale: 2.5; 
-    --duration: 7.5s; /* Antes 22s */
+    --duration: 5s; /* Antes 22s */
     z-index: 3;
 }
 
@@ -67,7 +67,7 @@ body, html {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
     background-position: left 0px bottom 0px;
     --scale: 2.8; 
-    --duration: 2.5s; /* Antes 7.5s - Velocidad super rápida */
+    --duration: 1.5s; /* Antes 7.5s - Velocidad super rápida */
     z-index: 4;
 }
 
