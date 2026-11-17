@@ -196,12 +196,13 @@ body, html {
 #finish-line {
     position: absolute;
     right: -250px; bottom: 0;
-    width: 20px; height: 350px;
+    width: 20px; height: 320px;
     background-color: #d32f2f; 
     border-left: 3px dashed #fff;
     border-right: 3px dashed #fff;
     box-shadow: -10px 0px 20px rgba(0,0,0,0.4); 
-    transition: right 3.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* VELOCIDAD AJUSTADA: 0.7s lineal para empatar con la velocidad de la pista */
+    transition: right 0.7s linear;
     z-index: 5;
 }
 #finish-line.show { right: 280px; }
