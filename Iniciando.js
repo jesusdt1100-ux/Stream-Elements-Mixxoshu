@@ -70,7 +70,7 @@ function spawnRunner(username, colorStr) {
     box.id = "runner-" + username;
     
     let charData = getCharacterByColor(colorStr);
-    let laneY = Math.floor(Math.random() * 160); 
+    let laneY = Math.floor(Math.random() * 320);
     
     box.style.bottom = (laneY + 10) + "px";
     box.style.zIndex = 300 - laneY;
