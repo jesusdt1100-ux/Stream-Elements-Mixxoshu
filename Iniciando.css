@@ -2,7 +2,7 @@
 
 body, html {
     margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
-    background-color: #87CEEB; /* Color de cielo base */
+    background-color: #87CEEB; /* Azul cielo de fondo */
 }
 
 #scene {
@@ -13,88 +13,84 @@ body, html {
 }
 
 /* ==========================================
-   SISTEMA DE PARALLAX (5 CAPAS - LOOP PERFECTO)
+   SISTEMA DE PARALLAX (LOOP PERFECTO 4:1)
    ========================================== */
 .parallax-layer {
     position: absolute;
-    bottom: 0; 
-    left: 0;
-    width: 100%; 
-    height: 1080px;
+    bottom: 0; left: 0;
+    width: 100%; height: 1080px;
     
-    /* Repite la imagen hacia los lados infinitamente */
+    /* Esto genera copias infinitas fuera de la pantalla automáticamente */
     background-repeat: repeat-x; 
     
-    /* El tamaño se controla ahora con esta variable para que no se estiren */
-    background-size: auto var(--bg-scale); 
+    /* MAGIA MATEMÁTICA: Como tus imágenes son 1024x256, el ancho siempre es la altura x 4 */
+    --bg-width: calc(var(--bg-height) * 4);
+    background-size: var(--bg-width) var(--bg-height);
     
-    /* Alinea todas las capas a la parte inferior del lienzo */
-    background-position-y: bottom;
-    
+    /* Mueve la imagen exactamente la distancia de su propio ancho para un loop invisible */
+    animation: scrollLayer var(--duration) linear infinite;
     image-rendering: pixelated;
 }
 
-/* 1. Cielo (El más lejano y lento) */
+@keyframes scrollLayer {
+    0% { background-position-x: 0px; }
+    100% { background-position-x: calc(-1 * var(--bg-width)); }
+}
+
+/* ==========================================
+   CAPAS INDIVIDUALES (Ajusta los tamaños aquí)
+   ========================================== */
+
 #layer-sky {
     background-image: url('https://i.imgur.com/o98p3B0.png');
-    /* AQUÍ PUEDES MODIFICAR LA ESCALA (100% = llena la pantalla, 50% = mitad de alto) */
-    --bg-scale: 100%; 
-    /* AQUÍ PUEDES MODIFICAR LA VELOCIDAD (Más segundos = más lento) */
-    animation: slideBg 120s linear infinite;
+    background-position-y: top;
+    /* ⬇️ AQUÍ AJUSTAS EL TAMAÑO: Al estar en 1080px llena toda la pantalla */
+    --bg-height: 1080px; 
+    --duration: 120s;
     z-index: 1;
 }
 
-/* 2. Montañas */
 #layer-mountains {
     background-image: url('https://i.imgur.com/e4K8BIY.png');
-    /* AQUÍ PUEDES MODIFICAR LA ESCALA (Al ser 30%, se verán más lejos y pequeñas) */
-    --bg-scale: 30%; 
-    animation: slideBg 80s linear infinite;
+    background-position-y: bottom;
+    --bg-height: 1080px;
+    --duration: 80s;
     z-index: 2;
 }
 
-/* 3. Vegetación y Bosque */
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
-    /* AQUÍ PUEDES MODIFICAR LA ESCALA */
-    --bg-scale: 45%; 
-    animation: slideBg 45s linear infinite;
+    background-position-y: bottom;
+    --bg-height: 1080px;
+    --duration: 45s;
     z-index: 3;
 }
 
-/* 4. Pista de tierra (Donde pisan las corredoras) */
 #layer-track {
     background-image: url('https://i.imgur.com/AFV9AYr.png');
-    /* AQUÍ PUEDES MODIFICAR LA ESCALA */
-    --bg-scale: 60%; 
-    animation: slideBg 15s linear infinite; 
+    background-position-y: bottom;
+    --bg-height: 1080px; 
+    --duration: 15s;
     z-index: 4;
 }
 
-/* 5. Valla Frontal (El más cercano y rápido, pasa por delante de todo) */
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
-    /* AQUÍ PUEDES MODIFICAR LA ESCALA (Al ser 70% o más, se verá enorme y cerca) */
-    --bg-scale: 20%; 
-    animation: slideBg 8s linear infinite;
+    background-position-y: bottom;
+    
+    /* ⬇️ AQUÍ AJUSTAS EL TAMAÑO DE LA VALLA FRONTAL */
+    /* 450px la hace mucho más pequeña, pero mantiene su proporción correcta y pegada al piso */
+    --bg-height: 450px; 
+    
+    /* ⬇️ AQUÍ AJUSTAS LA VELOCIDAD DE LA VALLA */
+    --duration: 7s; 
     z-index: 400;
     pointer-events: none;
 }
 
-/* 
-   Nueva animación basada en posición de fondo.
-   Al ir de 0 a 100%, CSS calcula automáticamente el tamaño de la imagen 
-   y garantiza un bucle continuo sin saltos feos.
-*/
-@keyframes slideBg {
-    0% { background-position-x: 0; }
-    100% { background-position-x: -100vw; } /* Usa viewport width para un cálculo más preciso */
-}
-/* Alternativa si -100vw da un pequeño salto: usa un valor en píxeles alto que sea múltiplo del ancho de tu imagen. */
-
 
 /* ==========================================
-   RESTO DEL OVERLAY (Se mantiene igual)
+   RESTO DEL OVERLAY (Corredoras, Chat, Timer)
    ========================================== */
 #timer {
     position: absolute;
@@ -161,7 +157,6 @@ body, html {
     border-width: 8px 8px 0; border-style: solid;
     border-color: #000 transparent transparent transparent;
 }
-
 .chat-bubble.show { opacity: 1; transform: scale(1); }
 
 #finish-line {
