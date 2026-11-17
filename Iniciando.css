@@ -59,8 +59,8 @@ body, html {
 #layer-vegetation {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
     /* Subida a 220px y escala reducida un tercio (3.75) */
-    background-position: left 0px bottom 220px; 
-    --scale: 3.75; 
+    background-position: left 0px bottom 420px; 
+    --scale: 3; 
     --duration: 22s;
     z-index: 3;
 }
