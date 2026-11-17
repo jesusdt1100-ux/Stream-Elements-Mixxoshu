@@ -147,16 +147,10 @@ function updateRace() {
 }
 
 function endRace() {
-    isRacing = false;
-    
-    let parallaxLayers = document.querySelectorAll('.parallax-layer');
-    parallaxLayers.forEach(layer => {
-        layer.style.animationPlayState = "paused"; 
-    });
-    
+    // 1. Disparamos la línea de meta, pero NO congelamos la carrera todavía
     document.getElementById("finish-line").classList.add("show"); 
     
-    // Oculta el texto flotante para enfocar la pantalla en el ganador
+    // Ocultamos el logo flotante
     let floatingText = document.getElementById("floating-text");
     if(floatingText) floatingText.style.display = "none";
     
@@ -167,16 +161,24 @@ function endRace() {
             maxDist = runners[u].x;
             winner = u;
         }
-    }
-
-    for (let u in runners) {
         let staminaContainer = document.getElementById(`stamina-container-${u}`);
         if (staminaContainer) staminaContainer.classList.remove("charging");
     }
 
+    // 2. Esperamos exactamente 700ms (el tiempo que tarda la cinta en entrar)
     setTimeout(() => {
+        // ¡PHOTO FINISH! Congelamos a las corredoras y el parallax al mismo tiempo
+        isRacing = false; 
+        
+        let parallaxLayers = document.querySelectorAll('.parallax-layer');
+        parallaxLayers.forEach(layer => {
+            layer.style.animationPlayState = "paused"; 
+        });
+
+        // Aplicamos las animaciones de victoria y frenado
         for (let u in runners) {
             if (u === winner) {
+                // 1620px es la posición matemáticamente exacta de la cinta en pantalla
                 runners[u].element.style.left = "1620px"; 
                 document.getElementById(`img-${u}`).src = runners[u].sprites.victoria;
                 showChatBubble(u, "🥇 ¡¡GANÉ!!");
@@ -186,5 +188,5 @@ function endRace() {
                 document.getElementById(`img-${u}`).src = runners[u].sprites.frente;
             }
         }
-    }, 3200); 
+    }, 700); // 700ms exactos, sincronizados con la transición del CSS
 }
