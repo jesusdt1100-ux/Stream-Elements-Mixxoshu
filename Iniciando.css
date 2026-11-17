@@ -32,7 +32,7 @@ body, html {
 
 @keyframes scrollLayer {
     0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-1 * var(--scaled-width))); }
+    200% { transform: translateX(calc(-1 * var(--scaled-width))); }
 }
 
 /* ==========================================
@@ -59,7 +59,7 @@ body, html {
     background-image: url('https://i.imgur.com/lwSkfMr.png');
     /* Subido a 370px (220 + 150) y escala reducida un tercio (de 3.75 a 2.5) */
     background-position: left 0px bottom 370px; 
-    --scale: 2.5; 
+    --scale: 2.2; 
     --duration: 22s;
     z-index: 3;
 }
@@ -75,11 +75,11 @@ body, html {
 #layer-fence {
     background-image: url('https://i.imgur.com/iI1yvcI.png');
     background-position: left 0px bottom 0px;
-    --scale: 4; 
+    --scale: 3; 
     --duration: 3.5s; 
     z-index: 400;
     pointer-events: none;
-    bottom: -160px; 
+    bottom: -200px; 
 }
 
 /* ==========================================
