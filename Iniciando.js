@@ -149,13 +149,16 @@ function updateRace() {
 function endRace() {
     isRacing = false;
     
-    // Pausar TODAS las capas del fondo 3D simultáneamente
     let parallaxLayers = document.querySelectorAll('.parallax-layer');
     parallaxLayers.forEach(layer => {
         layer.style.animationPlayState = "paused"; 
     });
     
     document.getElementById("finish-line").classList.add("show"); 
+    
+    // Oculta el texto flotante para enfocar la pantalla en el ganador
+    let floatingText = document.getElementById("floating-text");
+    if(floatingText) floatingText.style.display = "none";
     
     let winner = null;
     let maxDist = -1;
