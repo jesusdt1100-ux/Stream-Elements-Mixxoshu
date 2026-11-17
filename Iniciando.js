@@ -38,67 +38,96 @@ function recibirEvento(obj) {
     if (!isRacing) return;
     if (obj.detail.listener !== "message") return;
     
-    let user = obj.detail.event.data.displayName;
-    let text = obj.detail.event.data.text;
-    let color = obj.detail.event.data.tags.color || "#FFFFFF";
+    let data = obj.detail.event.data;
+    
+    // BLINDAJE 1: Usamos el nick real (letras minúsculas sin espacios) como ID único interno.
+    // Si no está disponible, limpiamos el displayName a la fuerza.
+    let userId = data.nick || data.displayName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase(); 
+    let displayName = data.displayName;
+    let text = data.text;
+    
+    // BLINDAJE 2: Verificamos de forma segura que el color exista en la ruta de datos.
+    let color = "#FFFFFF";
+    if (data.tags && data.tags.color) {
+        color = data.tags.color;
+    }
 
-    if (!runners[user] && Object.keys(runners).length < maxRunners) {
-        spawnRunner(user, color);
+    if (!runners[userId] && Object.keys(runners).length < maxRunners) {
+        spawnRunner(userId, displayName, color);
     }
     
-    if (runners[user]) {
+    if (runners[userId]) {
         let now = Date.now();
-        if (now - runners[user].lastBoost >= BOOST_COOLDOWN) {
-            runners[user].speed += 8; 
-            runners[user].lastBoost = now; 
+        if (now - runners[userId].lastBoost >= BOOST_COOLDOWN) {
+            runners[userId].speed += 8; 
+            runners[userId].lastBoost = now; 
         }
-        showChatBubble(user, text);
+        showChatBubble(userId, text);
     }
 }
 
 function getCharacterByColor(hexColor) {
-    let num = parseInt(hexColor.replace('#', ''), 16) || 0;
+    // BLINDAJE 3: Si el dato llega corrupto, lo forzamos a ser un string blanco válido
+    if (!hexColor || typeof hexColor !== 'string') {
+        hexColor = "#FFFFFF";
+    }
+    
+    let cleanHex = hexColor.replace('#', '');
+    let num = parseInt(cleanHex, 16);
+    
+    // Si la conversión falla (no es hexadecimal), asignamos 0 por defecto
+    if (isNaN(num)) num = 0; 
+    
     let index = num % CHARACTERS.length;
     return CHARACTERS[index];
 }
 
-function spawnRunner(username, colorStr) {
+function spawnRunner(userId, displayName, colorStr) {
     let container = document.getElementById("runners-container");
     let box = document.createElement("div");
     
     box.className = "runner-box";
-    box.id = "runner-" + username;
+    // Usamos el ID seguro para el DOM
+    box.id = "runner-" + userId;
     
     let charData = getCharacterByColor(colorStr);
-    let laneY = Math.floor(Math.random() * 320);
+    let laneY = Math.floor(Math.random() * 320); 
     
     box.style.bottom = (laneY + 10) + "px";
     box.style.zIndex = 300 - laneY;
+    
+    if (!colorStr || typeof colorStr !== 'string') colorStr = "#FFFFFF";
     box.style.setProperty('--user-color', colorStr);
 
+    // Se imprime visualmente el displayName, pero los "id" del HTML utilizan el userId seguro
     box.innerHTML = `
-        <div class="chat-bubble" id="bubble-${username}"></div>
-        <div class="runner-name">${username}</div>
-        <div class="stamina-container charging" id="stamina-container-${username}">
-            <div class="stamina-fill" id="stamina-${username}"></div>
+        <div class="chat-bubble" id="bubble-${userId}"></div>
+        <div class="runner-name">${displayName}</div>
+        <div class="stamina-container charging" id="stamina-container-${userId}">
+            <div class="stamina-fill" id="stamina-${userId}"></div>
         </div>
-        <img class="runner-img" id="img-${username}" src="${charData.correrTurbo}">
+        <img class="runner-img" id="img-${userId}" src="${charData.correrTurbo}">
     `;
     container.appendChild(box);
 
-    runners[username] = {
+    // El registro ahora usa el userId para evitar la clonación
+    runners[userId] = {
         element: box,
         sprites: charData,
         x: -200, 
         speed: 12, 
         laneY: laneY,
         state: "correrTurbo",
-        lastBoost: Date.now() 
+        lastBoost: Date.now(),
+        displayName: displayName
     };
 }
 
-function showChatBubble(username, text) {
-    let bubble = document.getElementById(`bubble-${username}`);
+function showChatBubble(userId, text) {
+    let bubble = document.getElementById(`bubble-${userId}`);
+    // BLINDAJE 4: Detener ejecución si la burbuja no fue creada
+    if (!bubble) return; 
+    
     bubble.innerText = text.length > 18 ? text.substring(0, 18) + "..." : text;
     bubble.classList.add("show");
     
@@ -126,7 +155,8 @@ function updateRace() {
         
         if (runners[u].state !== targetState) {
             runners[u].state = targetState;
-            document.getElementById(`img-${u}`).src = runners[u].sprites[targetState];
+            let imgEl = document.getElementById(`img-${u}`);
+            if (imgEl) imgEl.src = runners[u].sprites[targetState];
         }
 
         let timeSinceBoost = now - runners[u].lastBoost;
@@ -147,27 +177,23 @@ function updateRace() {
 }
 
 function endRace() {
-    // 1. Disparamos la línea de meta, pero NO congelamos la carrera todavía
     document.getElementById("finish-line").classList.add("show"); 
     
-    // Ocultamos el logo flotante
     let floatingText = document.getElementById("floating-text");
     if(floatingText) floatingText.style.display = "none";
     
-    let winner = null;
+    let winnerId = null;
     let maxDist = -1;
     for (let u in runners) {
         if (runners[u].x > maxDist) {
             maxDist = runners[u].x;
-            winner = u;
+            winnerId = u;
         }
         let staminaContainer = document.getElementById(`stamina-container-${u}`);
         if (staminaContainer) staminaContainer.classList.remove("charging");
     }
 
-    // 2. Esperamos exactamente 700ms (el tiempo que tarda la cinta en entrar)
     setTimeout(() => {
-        // ¡PHOTO FINISH! Congelamos a las corredoras y el parallax al mismo tiempo
         isRacing = false; 
         
         let parallaxLayers = document.querySelectorAll('.parallax-layer');
@@ -175,18 +201,19 @@ function endRace() {
             layer.style.animationPlayState = "paused"; 
         });
 
-        // Aplicamos las animaciones de victoria y frenado
         for (let u in runners) {
-            if (u === winner) {
-                // 1620px es la posición matemáticamente exacta de la cinta en pantalla
+            let imgEl = document.getElementById(`img-${u}`);
+            if (!imgEl) continue;
+            
+            if (u === winnerId) {
                 runners[u].element.style.left = "1620px"; 
-                document.getElementById(`img-${u}`).src = runners[u].sprites.victoria;
+                imgEl.src = runners[u].sprites.victoria;
                 showChatBubble(u, "🥇 ¡¡GANÉ!!");
             } else {
                 let finalX = parseInt(runners[u].element.style.left) - 180;
                 runners[u].element.style.left = Math.max(100, finalX) + "px";
-                document.getElementById(`img-${u}`).src = runners[u].sprites.frente;
+                imgEl.src = runners[u].sprites.frente;
             }
         }
-    }, 700); // 700ms exactos, sincronizados con la transición del CSS
+    }, 700); 
 }
