@@ -1,52 +1,19 @@
 // ==========================================
-// DICCIONARIO DE CORREDORAS (Añade más aquí)
+// DICCIONARIO DE CORREDORAS
 // ==========================================
 const CHARACTERS = [
-    {
-        name: "Grass Wonder",
-        frente: "https://i.imgur.com/YUvWQkI.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/bjadp5J.gif",     // Pose (512px)
-        correrLento: "https://i.imgur.com/lhLRvI1.gif",  // Run_Slow (64px)
-        correrTurbo: "https://i.imgur.com/Zw0MyPf.gif"   // Run_Fast (64px)
-    },
-    {
-        name: "Seiun Sky",
-        frente: "https://i.imgur.com/LTWNk1T.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/u8awaYl.gif",     // Celebrate (64px)
-        correrLento: "https://i.imgur.com/mwLOMeU.gif",  // Run_Slow (64px)
-        correrTurbo: "https://i.imgur.com/XBAsKNH.gif"   // Run_Fast (64px)
-    },
-    {
-        name: "Special Week",
-        frente: "https://i.imgur.com/cdgR5VS.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/UfQ48JV.gif",     // Celebrate (64px)
-        correrLento: "https://i.imgur.com/iYdVdvC.gif",  // Run_Slow (64px)
-        correrTurbo: "https://i.imgur.com/Hv90jWb.gif"   // Run_Fast (64px)
-    },
-    {
-        name: "King Halo",
-        frente: "https://i.imgur.com/diJjhBC.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/oo6Om9l.gif",     // Celebrate (64px)
-        correrLento: "https://i.imgur.com/j0ncvmD.gif",  // Run_Slow (64px)
-        correrTurbo: "https://i.imgur.com/P2NAr0V.gif"   // Run_Fast (64px)
-    },
-    {
-        name: "Condor Pasa",
-        frente: "https://i.imgur.com/7WaM8zU.gif",       // Stand (512px)
-        victoria: "https://i.imgur.com/6YnBydV.gif",     // Celebrate (64px)
-        correrLento: "https://i.imgur.com/6tCm8l9.gif",  // Run_Slow (64px)
-        correrTurbo: "https://i.imgur.com/njXH8mB.gif"   // Run_Fast (64px)
-    }
+    { name: "Grass Wonder", frente: "https://i.imgur.com/YUvWQkI.gif", victoria: "https://i.imgur.com/bjadp5J.gif", correrLento: "https://i.imgur.com/lhLRvI1.gif", correrTurbo: "https://i.imgur.com/Zw0MyPf.gif" },
+    { name: "Seiun Sky", frente: "https://i.imgur.com/LTWNk1T.gif", victoria: "https://i.imgur.com/u8awaYl.gif", correrLento: "https://i.imgur.com/mwLOMeU.gif", correrTurbo: "https://i.imgur.com/XBAsKNH.gif" },
+    { name: "Special Week", frente: "https://i.imgur.com/cdgR5VS.gif", victoria: "https://i.imgur.com/UfQ48JV.gif", correrLento: "https://i.imgur.com/iYdVdvC.gif", correrTurbo: "https://i.imgur.com/Hv90jWb.gif" },
+    { name: "King Halo", frente: "https://i.imgur.com/diJjhBC.gif", victoria: "https://i.imgur.com/oo6Om9l.gif", correrLento: "https://i.imgur.com/j0ncvmD.gif", correrTurbo: "https://i.imgur.com/P2NAr0V.gif" },
+    { name: "Condor Pasa", frente: "https://i.imgur.com/7WaM8zU.gif", victoria: "https://i.imgur.com/6YnBydV.gif", correrLento: "https://i.imgur.com/6tCm8l9.gif", correrTurbo: "https://i.imgur.com/njXH8mB.gif" }
 ];
 
-// ==========================================
-// VARIABLES GLOBALES
-// ==========================================
 let runners = {};
 let maxRunners = 64;
-let countdown = 300; // 5 minutos
+let countdown = 300; 
 let isRacing = true;
-const BOOST_COOLDOWN = 4000; // 4 segundos de enfriamiento para el turbo
+const BOOST_COOLDOWN = 4000; 
 
 function updateTimerText() {
     let min = Math.floor(countdown / 60).toString().padStart(2, '0');
@@ -54,12 +21,7 @@ function updateTimerText() {
     document.getElementById("timer").innerText = `${min}:${sec}`;
 }
 
-// Reemplaza onWidgetLoad
 function iniciarOverlay(obj) {
-    // Spawns de prueba (Opcional, los puedes quitar en producción)
-    spawnRunner("Mixxoshu", "#FF0000");
-    spawnRunner("Spoony", "#00FF00");
-    
     let timerInterval = setInterval(() => {
         if (countdown > 0) {
             countdown--;
@@ -69,12 +31,9 @@ function iniciarOverlay(obj) {
             clearInterval(timerInterval);
         }
     }, 1000);
-
-    // Motor de físicas y animaciones
     setInterval(updateRace, 100); 
 }
 
-// Reemplaza onEventReceived
 function recibirEvento(obj) {
     if (!isRacing) return;
     if (obj.detail.listener !== "message") return;
@@ -89,16 +48,14 @@ function recibirEvento(obj) {
     
     if (runners[user]) {
         let now = Date.now();
-        // Solo da el buff si ya pasó el tiempo de recarga
         if (now - runners[user].lastBoost >= BOOST_COOLDOWN) {
             runners[user].speed += 8; 
-            runners[user].lastBoost = now; // Reinicia el cronómetro de la barra
+            runners[user].lastBoost = now; 
         }
-        showChatBubble(user, text); // El globo de chat sale siempre
+        showChatBubble(user, text);
     }
 }
 
-// Lógica para asignar personaje según el color del usuario
 function getCharacterByColor(hexColor) {
     let num = parseInt(hexColor.replace('#', ''), 16) || 0;
     let index = num % CHARACTERS.length;
@@ -136,7 +93,7 @@ function spawnRunner(username, colorStr) {
         speed: 12, 
         laneY: laneY,
         state: "correrTurbo",
-        lastBoost: Date.now() // Inician con turbo, por lo que la barra se muestra y empieza a recargar
+        lastBoost: Date.now() 
     };
 }
 
@@ -152,19 +109,15 @@ function showChatBubble(username, text) {
 
 function updateRace() {
     if (!isRacing) return;
-
     let maxDist = 0;
-    let now = Date.now(); // Obtenemos el tiempo actual
+    let now = Date.now(); 
     
-    // Físicas
     for (let u in runners) {
         if (runners[u].speed > 3) runners[u].speed -= 0.4; 
-        
         runners[u].x += runners[u].speed; 
         if (runners[u].x > maxDist) maxDist = runners[u].x;
     }
 
-    // Dibujado, GIFs y Barra de Estamina
     for (let u in runners) {
         let displayX = (runners[u].x - maxDist) + 1250; 
         runners[u].element.style.left = displayX + "px";
@@ -176,18 +129,15 @@ function updateRace() {
             document.getElementById(`img-${u}`).src = runners[u].sprites[targetState];
         }
 
-        // --- LÓGICA DE LA BARRA DE ESTAMINA ---
         let timeSinceBoost = now - runners[u].lastBoost;
         let staminaFill = document.getElementById(`stamina-${u}`);
         let staminaContainer = document.getElementById(`stamina-container-${u}`);
         
         if (staminaContainer && staminaFill) {
             if (timeSinceBoost >= BOOST_COOLDOWN) {
-                // Completado: Se llena y se vuelve invisible
                 staminaFill.style.height = "100%";
                 staminaContainer.classList.remove("charging"); 
             } else {
-                // En proceso de recarga: Se calcula el porcentaje y se muestra la barra
                 let percent = Math.floor((timeSinceBoost / BOOST_COOLDOWN) * 100);
                 staminaFill.style.height = percent + "%";
                 staminaContainer.classList.add("charging");
@@ -198,7 +148,13 @@ function updateRace() {
 
 function endRace() {
     isRacing = false;
-    document.getElementById("background").style.animationPlayState = "paused"; 
+    
+    // Pausar TODAS las capas del fondo 3D simultáneamente
+    let parallaxLayers = document.querySelectorAll('.parallax-layer');
+    parallaxLayers.forEach(layer => {
+        layer.style.animationPlayState = "paused"; 
+    });
+    
     document.getElementById("finish-line").classList.add("show"); 
     
     let winner = null;
@@ -210,7 +166,6 @@ function endRace() {
         }
     }
 
-    // Escondemos las barras de todas las corredoras al terminar
     for (let u in runners) {
         let staminaContainer = document.getElementById(`stamina-container-${u}`);
         if (staminaContainer) staminaContainer.classList.remove("charging");
@@ -219,12 +174,10 @@ function endRace() {
     setTimeout(() => {
         for (let u in runners) {
             if (u === winner) {
-                // Ganadora
                 runners[u].element.style.left = "1620px"; 
                 document.getElementById(`img-${u}`).src = runners[u].sprites.victoria;
                 showChatBubble(u, "🥇 ¡¡GANÉ!!");
             } else {
-                // Perdedoras
                 let finalX = parseInt(runners[u].element.style.left) - 180;
                 runners[u].element.style.left = Math.max(100, finalX) + "px";
                 document.getElementById(`img-${u}`).src = runners[u].sprites.frente;
