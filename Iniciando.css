@@ -81,7 +81,7 @@ body, html {
     --duration: 3.5s; /* Pasa a toda velocidad */
     z-index: 400;
     pointer-events: none;
-    bottom: -460px; 
+    bottom: -360px; 
 }
 
 
