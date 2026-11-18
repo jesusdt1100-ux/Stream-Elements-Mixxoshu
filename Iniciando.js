@@ -1,3 +1,52 @@
+// 1. Pega esto arriba del todo en tu Iniciando.js (debajo de CHARACTERS)
+let hallOfFame = {};
+
+function cargarLeaderboardIniciando() {
+    SE_API.store.get('uma_hall_of_fame').then(data => {
+        if (data) hallOfFame = data;
+        renderizarTablaIniciando();
+    });
+}
+
+function registrarVictoria(userId, displayName) {
+    if (!hallOfFame[userId]) {
+        hallOfFame[userId] = { name: displayName, wins: 0, points: 1000 };
+    }
+    hallOfFame[userId].wins += 1;
+    hallOfFame[userId].name = displayName;
+    SE_API.store.set('uma_hall_of_fame', hallOfFame);
+    renderizarTablaIniciando();
+}
+
+function renderizarTablaIniciando() {
+    let container = document.getElementById('iniciando-leaderboard');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'iniciando-leaderboard';
+        container.style.cssText = `
+            position: absolute; top: 40px; left: 50px; z-index: 500;
+            background: rgba(17, 17, 17, 0.85); border: 4px solid #ff007f;
+            box-shadow: 6px 6px 0px #76ff03; border-radius: 10px;
+            padding: 15px 20px; color: #fff; font-family: 'Press Start 2P', cursive;
+        `;
+        document.getElementById('scene').appendChild(container);
+    }
+
+    let sorted = Object.values(hallOfFame).sort((a, b) => b.wins - a.wins).slice(0, 5);
+    let html = `<div style="color:#ffeb3b; font-size:16px; margin-bottom:12px; text-align:center;">🏆 TOP CORREDORAS</div>`;
+    if (sorted.length === 0) {
+        html += `<div style="font-size:11px; color:#ccc;">Sin victorias aún</div>`;
+    } else {
+        sorted.forEach((u, i) => {
+            let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i+1}`;
+            html += `<div style="font-size:12px; margin: 6px 0; display:flex; justify-content:space-between; gap:20px;">
+                        <span>${medal} ${u.name}</span>
+                        <span style="color:#76ff03;">${u.wins}W</span>
+                     </div>`;
+        });
+    }
+    container.innerHTML = html;
+}
 // ==========================================
 // DICCIONARIO DE CORREDORAS
 // ==========================================
