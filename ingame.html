@@ -1,0 +1,63 @@
+<div id="ingame-scene">
+
+    <!-- 1. TABLA DE CLASIFICACIÓN (Flotante o desplegable) -->
+    <div id="leaderboard-panel" class="hidden">
+        <div class="lb-header">🏆 HALL OF FAME</div>
+        <div id="lb-list"></div>
+    </div>
+
+    <!-- 2. SISTEMA DE ANUNCIOS (!anuncio) -->
+    <div id="announcement-track"></div>
+
+    <!-- 3. MARCO DE CÁMARA (Esquina Derecha - 16:9) + ZONA PEEK CON MASK -->
+    <!-- Puedes ajustar top/right en el CSS según dónde pongas a Mixxo -->
+    <div id="camera-wrapper">
+        <!-- Zona izquierda con WebKit Mask: la corredora sale desde detrás del borde -->
+        <div id="cam-peek-mask">
+            <div id="cam-peek-actor">
+                <div class="peek-badge" id="peek-badge">!LURK</div>
+                <div class="peek-user" id="peek-user">Username</div>
+                <img id="peek-img" src="" alt="Uma Peek">
+            </div>
+        </div>
+
+        <!-- Marco 16:9 donde va la cámara o VTuber en OBS -->
+        <div id="camera-frame">
+            <div class="cam-corner tl"></div>
+            <div class="cam-corner tr"></div>
+            <div class="cam-corner bl"></div>
+            <div class="cam-corner br"></div>
+            <div class="cam-label">MIXXOSHU</div>
+        </div>
+    </div>
+
+    <!-- 4. ESCENARIO SOUNDALERTS / TTS (Abajo a la Derecha) -->
+    <div id="tts-stage">
+        <div id="tts-actor">
+            <div class="tts-bubble" id="tts-bubble">
+                <div class="tts-author" id="tts-author">Usuario</div>
+                <div class="tts-text" id="tts-text">Mensaje de voz...</div>
+            </div>
+            <img id="tts-img" src="" alt="TTS Runner">
+        </div>
+    </div>
+
+    <!-- 5. MINIJUEGO DE CARRERA IN-GAME (!carrera free / !carrera apuesta) -->
+    <div id="ingame-race-wrapper" class="hidden">
+        <!-- Banner de estado de apuesta / Lobby -->
+        <div id="race-hud">
+            <div id="race-status-title">¡CARRERA ABIERTA!</div>
+            <div id="race-status-sub">Escribe <span class="cmd-highlight">!p 100</span> para entrar</div>
+            <div id="race-pot">POZO: 0 PTS</div>
+            <div id="race-timer">00:45</div>
+        </div>
+
+        <!-- Pista inferior transparente con distancia real -->
+        <div id="ingame-track">
+            <div id="ingame-distance-markers"></div>
+            <div id="ingame-runners-container"></div>
+            <div id="ingame-finish-line"></div>
+        </div>
+    </div>
+
+</div>
