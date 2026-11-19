@@ -183,7 +183,7 @@ function recibirEvento(obj) {
     if (lower.startsWith("!debug") && isModOrBroadcaster) {
         let sub = lower.split(" ")[1] || "peek";
         if (sub === "peek") {
-            activarCamaraPeek(displayName, "🛠️ DEBUG PEEK", color);
+            activarCamaraPeek(displayName, "DEBUG PEEK", color);
         } else if (sub === "anuncio") {
             lanzarAnuncio("¡Este es un anuncio de prueba caminando por el stream!");
         } else if (sub === "tts") {
@@ -382,19 +382,19 @@ function abrirLobbyCarrera(modo, segundosLobby = 35) {
     document.getElementById("ingame-race-wrapper").classList.remove("hidden");
 
     // También sale una corredora del marco de la cámara avisando que se abrió la carrera
-    activarCamaraPeek("¡A CORRER!", modo === "BET" ? "💰 !CARRERA" : "🏇 !CARRERA", "#76ff03");
+    activarCamaraPeek("¡A CORRER!", modo === "BET" ? "!CARRERA" : "!CARRERA", "#76ff03");
 
     const titleEl = document.getElementById("race-status-title");
     const subEl = document.getElementById("race-status-sub");
     const potEl = document.getElementById("race-pot");
 
     if (modo === "BET") {
-        titleEl.innerText = "💰 ¡CARRERA CON APUESTA!";
+        titleEl.innerText = "¡CARRERA CON APUESTA!";
         subEl.innerHTML = `Escribe <span class="cmd-highlight">!p [puntos]</span> para apostar y correr`;
         potEl.style.display = "block";
         potEl.innerText = `POZO: 0 PTS`;
     } else {
-        titleEl.innerText = "🏇 ¡CARRERA GRATIS ABIERTA!";
+        titleEl.innerText = "¡CARRERA GRATIS ABIERTA!";
         subEl.innerHTML = `Escribe <span class="cmd-highlight">!p</span> en el chat para entrar`;
         potEl.style.display = "none";
     }
@@ -486,7 +486,7 @@ function caminarAlPuntoDePartida() {
     }
 
     raceState = "WALKING_TO_START";
-    document.getElementById("race-status-title").innerText = "🚶 ¡A SUS POSICIONES!";
+    document.getElementById("race-status-title").innerText = "¡A SUS POSICIONES!";
     document.getElementById("race-status-sub").innerText = "Las corredoras se acercan al punto de partida...";
 
     for (let u in raceRunners) {
@@ -549,7 +549,7 @@ function iniciarCarreraIngame() {
     raceTimer = 60;
 
     document.getElementById("ingame-start-line").classList.add("slide-out");
-    document.getElementById("race-status-title").innerText = "🔥 ¡EN MARCHA!";
+    document.getElementById("race-status-title").innerText = "¡EN MARCHA!";
     document.getElementById("race-status-sub").innerHTML = `¡Escribe en el chat para <span class="cmd-highlight">BOOSTEAR</span> o te quedarás atrás!`;
 
     let now = Date.now();
