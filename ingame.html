@@ -1,18 +1,16 @@
 <div id="ingame-scene">
 
-    <!-- 1. TABLA DE CLASIFICACIÓN (Flotante o desplegable) -->
+    <!-- 1. TABLA DE CLASIFICACIÓN (Hall of Fame) -->
     <div id="leaderboard-panel" class="hidden">
-        <div class="lb-header">🏆 HALL OF FAME</div>
+        <div class="lb-header">HALL OF FAME</div>
         <div id="lb-list"></div>
     </div>
 
     <!-- 2. SISTEMA DE ANUNCIOS (!anuncio) -->
     <div id="announcement-track"></div>
 
-    <!-- 3. MARCO DE CÁMARA (Esquina Derecha - 16:9) + ZONA PEEK CON MASK -->
-    <!-- Puedes ajustar top/right en el CSS según dónde pongas a Mixxo -->
+    <!-- 3. MARCO DE CÁMARA (Esquina Derecha - 16:9) + ZONA PEEK CON WEBKIT MASK -->
     <div id="camera-wrapper">
-        <!-- Zona izquierda con WebKit Mask: la corredora sale desde detrás del borde -->
         <div id="cam-peek-mask">
             <div id="cam-peek-actor">
                 <div class="peek-badge" id="peek-badge">!LURK</div>
@@ -21,12 +19,7 @@
             </div>
         </div>
 
-        <!-- Marco 16:9 donde va la cámara o VTuber en OBS -->
         <div id="camera-frame">
-            <div class="cam-corner tl"></div>
-            <div class="cam-corner tr"></div>
-            <div class="cam-corner bl"></div>
-            <div class="cam-corner br"></div>
             <div class="cam-label">MIXXOSHU</div>
         </div>
     </div>
@@ -42,19 +35,18 @@
         </div>
     </div>
 
-    <!-- 5. MINIJUEGO DE CARRERA IN-GAME (!carrera free / !carrera apuesta) -->
+    <!-- 5. MINIJUEGO DE CARRERA IN-GAME -->
     <div id="ingame-race-wrapper" class="hidden">
-        <!-- Banner de estado de apuesta / Lobby -->
         <div id="race-hud">
             <div id="race-status-title">¡CARRERA ABIERTA!</div>
             <div id="race-status-sub">Escribe <span class="cmd-highlight">!p 100</span> para entrar</div>
             <div id="race-pot">POZO: 0 PTS</div>
-            <div id="race-timer">00:45</div>
+            <div id="race-timer">00:35</div>
         </div>
 
-        <!-- Pista inferior transparente con distancia real -->
         <div id="ingame-track">
-            <div id="ingame-distance-markers"></div>
+            <div id="ingame-start-line"></div>
+            <div id="race-countdown-banner"></div>
             <div id="ingame-runners-container"></div>
             <div id="ingame-finish-line"></div>
         </div>
